@@ -1,0 +1,35 @@
+CREATE DATABASE Biblioteca4D;
+
+CREATE TABLE categorias
+(
+Id_categoria int auto_increment primary key,
+nombre_categoria varchar(50) not null
+);
+
+CREATE TABLE autores
+(
+Id_autor int auto_increment primary key,
+nombre_autor varchar(50) not null,
+apellido_autor varchar(50) not null
+);
+
+CREATE TABLE Editoriales
+
+(
+Id_Editorial int auto_increment,
+nombre_Editorial varchar(50) not null,
+rut_Editorial varchar (13) not null,
+direccion_Editorial varchar (50) not null,
+primary key (Id_Editorial),
+Id_Comuna int not null,
+FOREIGN KEY (Id_Comuna) REFERENCES comunas(Id_Comuna),
+correo_Editorial varchar (50) not null,
+telefono_Editorial varchar (12) not null
+);
+
+
+CREATE TABLE Textos ( Id_Texto int auto_increment, nombre_Texto varchar(80) not null, descripcion_Texto varchar (100) not null, primary key (Id_Texto), Id_Editorial int not null, FOREIGN KEY (Id_Editorial) REFERENCES editoriales(Id_Editorial), Edicion_Texto varchar (20) not null, Id_Categoria int not null, FOREIGN KEY (id_Categoria) REFERENCES categorias(Id_Categoria), Id_Autor int not null, FOREIGN KEY (Id_Autor) REFERENCES autores(Id_Autor), Stock_Texto int not null );
+
+CREATE TABLE Usuarios ( Id_Usuario int auto_increment, nombre_Usuario varchar(30) not null, apellido_Usuario varchar (30) not null, run_Usuario varchar (13) not null, fech_nac_Usuario datetime not null, telefono_Usuario varchar (12) not null, correo_Usuario varchar (50) not null, calle_Usuario varchar (100) not null, numero_Usuario varchar (20) not null, block_Usuario varchar (20), num_depto_Usuario varchar (20), primary key (Id_Usuario), Id_Comuna int not null, FOREIGN KEY (Id_Comuna) REFERENCES comunas (Id_Comuna) );
+
+CREATE TABLE Prestamos ( Id_Prestamo int auto_Increment, primary key (Id_Prestamo), Id_Usuario int not null, FOREIGN KEY (Id_Usuario) REFERENCES usuarios (Id_Usuario), Id_Texto int not null, FOREIGN KEY (Id_Texto) REFERENCES textos (Id_Texto), cantidad_Prestamo int not null, fecha_Prestamo datetime );
