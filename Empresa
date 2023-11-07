@@ -1,0 +1,38 @@
+create table comunas
+( Id_Comuna integer PRIMARY KEY,
+nombre_Comuna varchar(20) null);
+
+create table cargos
+(Id_Cargo integer PRIMARY KEY,
+nombre_Cargo varchar(20) null
+);
+
+create table empleados
+(rut_Empleado varchar(15) PRIMARY KEY NOT NULL,
+nombre_Empleado varchar (20) null,
+apellido_Empleado varchar (20) null,
+Id_CargoEmp int null,
+sueldo_Empleado integer null,
+Id_ComunaEmp  integer null,
+constraint FK_Empleado_cargo Foreign Key (Id_CargoEmp) references cargos(Id_Cargo),
+constraint FK_Comuna_Empleado foreign key (Id_ComunaEmp) references comunas(Id_Comuna));
+
+create table clientes 
+(rut_Cliente varchar(15) primary key,
+nombre_Cliente varchar(20) null,
+apellido_Cliente varchar(20) null,
+Cli_Id_Comuna integer null,
+constraint FK_Comuna_Cliente Foreign key (Cli_Id_Comuna) references comunas(Id_Comuna));
+
+create table productos
+(Id_Producto integer primary key,
+nombre_Producto varchar(20) null
+);
+
+create table productoClientes
+(rut_ProductoCliente varchar(15) not null,
+Id_ProClipr integer not null,
+fechaEntrega_ProductoCliente date null,
+saldo_ProductoCliente integer null,
+constraint FK_PC_Cliente foreign key (rut_ProductoCliente) references clientes(rut_Cliente),
+constraint FK_PC_Producto foreign key (Id_ProClipr) references productos(Id_Producto));
