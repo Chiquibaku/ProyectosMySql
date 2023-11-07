@@ -1,0 +1,140 @@
+create database panaderia4dmb(
+)
+
+
+1.create table comunas(
+Id_Comuna int AUTO_INCREMENT,
+nombre_Comuna varchar(20) not null,
+Primary key(Id_Comuna)
+)
+
+2.create table cargos(
+Id_Cargo int AUTO_INCREMENT,
+nombre_Cargo varchar(50)not null,
+Primary key (Id_Cargo)
+)
+
+3.create table productos(
+Id_Producto int AUTO_INCREMENT,
+precio_Producto int,
+nombre_Producto varchar(50) not null,
+categoria_Producto varchar(50) not null,
+Primary key (Id_Producto)
+)
+
+4.create table clientes(
+Id_Cliente int AUTO_INCREMENT,
+rut_Cliente varchar(15) not null,
+nombre_Cliente varchar(50) not null,
+apellido_Cliente varchar(50) not null,
+email_Cliente varchar(120) not null,
+direccion_Cliente varchar(250) not null,
+telefono_Cliente int,
+Primary Key (Id_Cliente)
+)
+
+5.create table empleados(
+Id_Empleado int AUTO_INCREMENT,
+rut_Empleado varchar(15) not null,
+nombre_Empleado varchar(50) not null,
+apellido_Empleado varchar(80) not null,
+Id_cargoEmp int not null,
+Primary key (Id_Empleado),
+CONSTRAINT FK_Empleado_Cargo
+FOREIGN KEY (Id_cargoEmp) references cargos(Id_Cargo)
+)
+6.create table proveedores(
+Id_Proveedor int AUTO_INCREMENT,
+nombre_Proveedor varchar(50) not null,
+direccion_Proveedor varchar(255) not null,
+Id_comunaPro int not null,
+telefono_Comuna varchar(15) not null,
+Primary key (Id_Proveedor),
+CONSTRAINT FK_Proveedor_Comuna FOREIGN KEY (Id_ComunaPro) REFERENCES comunas(Id_Comuna)
+)
+
+
+
+
+7.create table insumos(
+Id_Insumo int AUTO_INCREMENT,
+nombre_Insumo varchar(50) not null,
+cantidad_Insumo int not null,
+Primary Key (Id_Insumo),
+Id_InsumoPro int not null,
+CONSTRAINT FK_Insumo_Proveedor FOREIGN KEY (Id_InsumoPro) REFERENCES proveedores(Id_Proveedor)
+)
+
+
+8.create table metodosPagos(
+Id_MetPago int AUTO_INCREMENT,
+nom_MetPago varchar(100) not null,
+Primary Key (Id_MetPago)
+)
+
+9.create table sucursales(
+Id_Sucursal int AUTO_INCREMENT,
+direccion_Sucursal varchar(150) not null,
+Primary Key (Id_Sucursal),
+Id_comunaSuc int not null,
+CONSTRAINT FK_Comuna_Sucursal FOREIGN KEY (Id_comunaSuc) REFERENCES comunas (Id_Comuna),
+telefono_Sucursal int not null
+)
+
+
+
+
+
+
+
+
+10.create table prodInsumos(
+Id_prodInsumo int AUTO_INCREMENT,
+Primary key (Id_prodInsumo),
+Id_insProducto int not null,
+CONSTRAINT FK_Insumo_Producto FOREIGN KEY (Id_insProducto) REFERENCES insumos (Id_Insumo),
+Id_productoIns int not null,
+CONSTRAINT FK_Producto_Insumo FOREIGN KEY (Id_productoIns) REFERENCES productos (Id_Producto),
+cantidad_prodInsumo int not null
+)
+
+11.create table ventas(
+Id_Venta int AUTO_INCREMENT,
+fecha_Venta date,
+Primary key (Id_Venta),
+Id_clienteVenta int not null,
+CONSTRAINT FK_Cliente_Venta FOREIGN KEY (Id_clienteVenta) REFERENCES clientes (Id_Cliente),
+Id_ventaEmpl int not null,
+CONSTRAINT FK_Venta_Empleado FOREIGN KEY (Id_ventaEmpl) REFERENCES empleados (Id_Empleado),
+Id_ventaSuc int not null,
+CONSTRAINT FK_Venta_Sucursal FOREIGN KEY (Id_ventaSuc) REFERENCES sucursales (Id_Sucursal),
+Id_ventaMetPago int not null,
+CONSTRAINT FK_Venta_MetodoPag FOREIGN KEY (Id_ventaMetPago) REFERENCES metodospagos (Id_MetPago)
+)
+
+11, 2.CREATE TABLE ventas
+(
+Ven_Id int AUTO_INCREMENT,
+Ven_Fecha DATE,
+Ven_Cli_Id int,
+Ven_Emp_Id int not null,
+Ven_Suc_Id int not null,
+Ven_Met_Pag_Id int not null,
+PRIMARY KEY (Ven_Id),
+CONSTRAINT FK_Ventas_Clientes FOREIGN KEY (Ven_Cli_Id) REFERENCES clientes(Id_Cliente),
+CONSTRAINT FK_Ventas_Empleados FOREIGN KEY (Ven_Emp_Id) REFERENCES empleados(Id_Empleado),
+CONSTRAINT FK_Ventas_Sucursales FOREIGN KEY (Ven_Suc_Id) REFERENCES sucursales(Id_Sucursal),
+CONSTRAINT FK_Ventas_Metodo_De_Pago FOREIGN KEY (Ven_Met_Pag_Id) REFERENCES metodo_pagos(Id_metPago)    
+);
+
+
+
+12.create table productoventas(
+Id_producVenta int AUTO_INCREMENT,
+Primary key (Id_producVenta),
+Id_venProducto int not null,
+CONSTRAINT FK_Ven_Producto FOREIGN KEY (Id_venProducto) REFERENCES productos (Id_Producto),
+Id_prodVenta int not null,
+CONSTRAINT FK_Prod_Venta FOREIGN KEY (Id_prodVenta) REFERENCES ventas (Id_Venta),
+precio_producVenta int not null
+)
